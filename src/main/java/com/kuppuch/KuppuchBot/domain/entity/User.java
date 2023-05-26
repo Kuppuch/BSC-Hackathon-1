@@ -15,9 +15,8 @@ import org.hibernate.validator.constraints.Length;
 @Table(name = "users")
 public class User {
 
-
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "first_name")
     @NotNull
@@ -29,13 +28,9 @@ public class User {
     private String LastName;
 
 
-    @ManyToMany
-    @JoinTable(
-        name = "user_role",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Roles> role;
+    @JoinColumn(name="role_id")
+    @ManyToOne()
+    private Role role;
 
 
     @OneToMany(mappedBy = "user")
@@ -50,7 +45,7 @@ public class User {
 
 
     @OneToMany(mappedBy = "user")
-    private List<LoginUsers> loginUsers;
+    private List<LoginUser> loginUsers;
 
     @ManyToMany
     @JoinTable(

@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 public class Page {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Integer confluenceId;
@@ -24,10 +24,10 @@ public class Page {
 
     @JoinColumn(name = "page_types")
     @OneToOne(cascade = CascadeType.ALL)
-    private PageTypes pageTypes;
+    private PageType pageTypes;
 
     @OneToMany(mappedBy = "pageId")
-    private Set<Tasks> tasks;
+    private Set<Task> tasks;
 
 
     @OneToOne(mappedBy = "onboardPage")

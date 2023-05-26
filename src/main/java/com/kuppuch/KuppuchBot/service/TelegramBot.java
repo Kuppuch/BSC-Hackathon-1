@@ -3,6 +3,7 @@ package com.kuppuch.KuppuchBot.service;
 import javax.annotation.PostConstruct;
 import javax.swing.text.html.Option;
 
+import com.kuppuch.KuppuchBot.domain.entity.Chat;
 import com.kuppuch.KuppuchBot.domain.entity.User;
 import com.kuppuch.KuppuchBot.repository.UserRepository;
 import lombok.extern.log4j.Log4j;
@@ -15,6 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -29,6 +31,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserController userController;
 
     private HashMap<Long, Boolean> emailChecker = new HashMap<>();
 
@@ -84,11 +89,14 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case "/chats":
                     if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
+                        emailChecker.put(update.getMessage().getChatId(), true);
                     } else {
-                        updateController.checkMail(update.getMessage().getChatId().toString());
+                        List<Chat> chatList = userController.getUserChats(update.getMessage().getChatId());
                         messageContent = "В этих чатах вас ждут:\n" +
-                                "Чат ЦК " + "Аналитики" + "\n" +
-                                "Чат off-topic " + "Аналитики" + "\n";
+                                "Чаты ЦК Аналитики:\n";
+                        for (Chat chat : chatList) {
+                            messageContent += "<a href='" + chat.getLink() + "'>" + chat.getName()  + "</a>\n";
+                        }
                     }
                     buildMessage(messageContent, chatID);
                     break;
@@ -163,10 +171,12 @@ public class TelegramBot extends TelegramLongPollingBot {
                            if(userRepository.findById(user.getId()).get().isActive() &&
                            userRepository.findById(user.getId()).get().getTelegrammId().length()>0){
                                messageContent = "Добро пожаловать!";
-                           }else {
+                           } else {
                                messageContent = "Доступ заперщен!";
                            }
 
+                       } else {
+                           messageContent = "Доступ заперщен!";
                        }
                     }
                     buildMessage(messageContent, chatID);

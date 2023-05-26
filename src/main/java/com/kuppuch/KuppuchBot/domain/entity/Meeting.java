@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 public class Meeting {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JoinColumn(name = "meeting_room_ig")

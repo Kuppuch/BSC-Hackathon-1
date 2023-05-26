@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 public class Mentoring {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 

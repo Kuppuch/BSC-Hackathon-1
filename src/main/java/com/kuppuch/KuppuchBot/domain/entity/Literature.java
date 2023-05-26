@@ -12,12 +12,12 @@ import lombok.EqualsAndHashCode;
 public class Literature {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    private Roles role;
+    private Role role;
 }

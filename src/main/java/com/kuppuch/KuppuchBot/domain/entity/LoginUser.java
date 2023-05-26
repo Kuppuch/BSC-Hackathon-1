@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @Table(name ="login_users")
-public class LoginUsers {
+public class LoginUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,7 +1,6 @@
 package com.kuppuch.KuppuchBot.domain.entity;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,10 +9,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @Table(name ="statuses")
-public class Statuses {
+public class Statuse {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Integer statusCode;
@@ -23,5 +22,5 @@ public class Statuses {
     private boolean isActive;
 
     @OneToOne(mappedBy = "statusCode")
-    private Tasks task;
+    private Task task;
 }

@@ -9,10 +9,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @Table(name ="task")
-public class Tasks {
+public class Task {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JoinColumn(name = "page_id")
@@ -23,6 +23,6 @@ public class Tasks {
 
     @JoinColumn(name = "status_code")
     @OneToOne(cascade = CascadeType.ALL)
-    private Statuses statusCode;
+    private Statuse statusCode;
 
 }

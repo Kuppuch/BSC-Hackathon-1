@@ -14,7 +14,7 @@ import java.util.Set;
 public class Chat {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -25,6 +25,6 @@ public class Chat {
 
     @ManyToMany
     @JoinColumn(name="role_id")
-    private Set<Roles> role;
+    private Set<Role> role;
 
 }

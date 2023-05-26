@@ -14,7 +14,7 @@ import java.util.Set;
 public class UserOnboard {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToMany(mappedBy = "userOnboard")

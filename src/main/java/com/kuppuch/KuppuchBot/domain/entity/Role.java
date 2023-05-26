@@ -11,25 +11,22 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @Table(name ="roles")
-public class Roles {
+public class Role {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
     @ManyToMany(mappedBy = "role")
-    private Set<Chat> roleChat;
+    private Set<Chat> chats;
 
-    @ManyToMany(mappedBy = "role")
-    private Set<User> user;
-
-
+    @OneToMany(mappedBy = "role")
+    private List<User> user;
 
     @OneToMany(mappedBy = "role")
     private List<Literature> literature;
 
-    private Integer roleCode;
     private String roleName;
     private boolean isActive;
 

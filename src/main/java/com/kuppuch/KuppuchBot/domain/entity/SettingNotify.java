@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 public class SettingNotify {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JoinColumn(name = "user_id", referencedColumnName = "id")

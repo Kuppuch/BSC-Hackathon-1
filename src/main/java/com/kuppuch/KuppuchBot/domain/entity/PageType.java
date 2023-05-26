@@ -9,10 +9,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode
 @Table(name ="page_types")
-public class PageTypes {
+public class PageType {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Integer pageTypeCode;
