@@ -1,13 +1,10 @@
 package com.kuppuch.KuppuchBot.domain.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.time.LocalDate;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import com.kuppuch.KuppuchBot.domain.model.Office;
-import com.kuppuch.KuppuchBot.domain.model.Role;
+import com.kuppuch.KuppuchBot.domain.model.UserType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
@@ -15,17 +12,50 @@ import org.hibernate.validator.constraints.Length;
 @Entity
 @Data
 @EqualsAndHashCode
-@Table(name ="users")
+@Table(name = "users")
 public class User {
+
 
     @Id
     @GeneratedValue
     private Long id;
+    @Column(name = "first_name")
     @NotNull
     @Length(max = 256)
-    private String name;
-    private Boolean newEmployee;
-    private Role role;
-    private Office office;
+    private String FirstName;
+    @Column(name = "last_name")
+    @NotNull
+    @Length(max = 256)
+    private String LastName;
 
+    @JoinColumn(name = "user_roles", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private Roles role;
+
+    @JoinColumn(name = "office_code", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private Office office_code;
+
+    @JoinColumn(name = "user_mentoring",  referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private Mentoring userMentoring;
+
+    @JoinColumn(name="login_user", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private LoginUsers loginUsers;
+
+
+    @Column(name ="telegramm_id")
+    private String telegrammId;
+
+    @Column(name = "active", nullable = false)
+    private boolean isActive;
+
+    @Column(name = "post_address")
+    private String postAddress;
+
+
+
+    public User() {
+    }
 }

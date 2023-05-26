@@ -34,6 +34,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             String messageText = update.getMessage().getText();
             long chatID = update.getMessage().getChatId();
             String messageContent = "";
+
             switch (messageText) {
                 case "/start":
                     messageContent = "Привет, " + update.getMessage().getChat().getFirstName() + "\n" +
