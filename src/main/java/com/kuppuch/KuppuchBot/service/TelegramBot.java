@@ -48,6 +48,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             switch (messageText) {
                 case "/start":
+                    checkEmployee();
                     messageContent = "Привет, " + update.getMessage().getChat().getFirstName() + "\n" +
                             "Вы состоите в ЦК <b>[Заглушка]</b>\n" +
                             "Вам могут понадобиться следующие ссылки: \n" +
@@ -55,16 +56,19 @@ public class TelegramBot extends TelegramLongPollingBot {
                     buildMessage(messageContent, chatID);
                     break;
                 case "/importamt_people":
+                    checkEmployee();
                     messageContent = "Some text";
                     buildMessage(messageContent, chatID);
                     break;
                 case "/chats":
+                    checkEmployee();
                     messageContent = "В этих чатах вас ждут:\n" +
                             "Чат ЦК " + "Аналитики" + "\n" +
                             "Чат off-topic " + "Аналитики" + "\n";
                     buildMessage(messageContent, chatID);
                     break;
                 case "/logins":
+                    checkEmployee();
                     messageContent = "Храните ваши логины в безопасности и не передавайте третим лицам\n" +
                             "Пользователь - " + "Заглушка" + "\n" +
                             "login - " + "Заглушка" + "\n" +
@@ -75,6 +79,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     buildMessage(messageContent, chatID);
                     break;
                 case "/notification":
+                    checkEmployee();
                     messageContent = "В ближайшую неделю вас ожидают следующие встречи:\n\n" +
                             "<b>Понедельник</b>\n" +
                             "15:00 - 16:00 1-1\n" +
@@ -84,15 +89,18 @@ public class TelegramBot extends TelegramLongPollingBot {
                     buildMessage(messageContent, chatID);
                     break;
                 case "/library_bsc":
+                    checkEmployee();
                     messageContent = "Предлгаю ознакомиться со следующей литературой\n"+
                             "<a href='https://habr.com/ru/articles/692524/'>Как аналитику стать разработчиком</a>";
                     buildMessage(messageContent, chatID);
                     break;
                 case "/search":
+                    checkEmployee();
                     messageContent = "Тут мы тестируем параметры\n" + update.getMessage().getText();
                     buildMessage(messageContent, chatID);
                     break;
                 case "/feedback":
+                    checkEmployee();
                     messageContent = "Тут тоже мы тестируем параметры\n" + update.getMessage().getText();
                     buildMessage(messageContent, chatID);
                     break;
@@ -119,5 +127,12 @@ public class TelegramBot extends TelegramLongPollingBot {
                 log.error(e.getMessage());
             }
         }
+    }
+
+    public boolean checkEmployee() {
+        if (1 != 1) {
+            return false;
+        }
+        return true;
     }
 }
