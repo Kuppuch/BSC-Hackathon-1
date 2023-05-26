@@ -48,7 +48,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             switch (messageText) {
                 case "/start":
-                    checkEmployee();
+                    checkEmployee(updateController.checkMail(update));
                     messageContent = "Привет, " + update.getMessage().getChat().getFirstName() + "\n" +
                             "Вы состоите в ЦК <b>[Заглушка]</b>\n" +
                             "Вам могут понадобиться следующие ссылки: \n" +
@@ -56,19 +56,19 @@ public class TelegramBot extends TelegramLongPollingBot {
                     buildMessage(messageContent, chatID);
                     break;
                 case "/importamt_people":
-                    checkEmployee();
+                    checkEmployee(updateController.checkMail(update));
                     messageContent = "Some text";
                     buildMessage(messageContent, chatID);
                     break;
                 case "/chats":
-                    checkEmployee();
+                    checkEmployee(updateController.checkMail(update));
                     messageContent = "В этих чатах вас ждут:\n" +
                             "Чат ЦК " + "Аналитики" + "\n" +
                             "Чат off-topic " + "Аналитики" + "\n";
                     buildMessage(messageContent, chatID);
                     break;
                 case "/logins":
-                    checkEmployee();
+                    checkEmployee(updateController.checkMail(update));
                     messageContent = "Храните ваши логины в безопасности и не передавайте третим лицам\n" +
                             "Пользователь - " + "Заглушка" + "\n" +
                             "login - " + "Заглушка" + "\n" +
@@ -79,7 +79,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     buildMessage(messageContent, chatID);
                     break;
                 case "/notification":
-                    checkEmployee();
+                    checkEmployee(updateController.checkMail(update));
                     messageContent = "В ближайшую неделю вас ожидают следующие встречи:\n\n" +
                             "<b>Понедельник</b>\n" +
                             "15:00 - 16:00 1-1\n" +
@@ -89,18 +89,18 @@ public class TelegramBot extends TelegramLongPollingBot {
                     buildMessage(messageContent, chatID);
                     break;
                 case "/library_bsc":
-                    checkEmployee();
+                    checkEmployee(updateController.checkMail(update));
                     messageContent = "Предлгаю ознакомиться со следующей литературой\n"+
                             "<a href='https://habr.com/ru/articles/692524/'>Как аналитику стать разработчиком</a>";
                     buildMessage(messageContent, chatID);
                     break;
                 case "/search":
-                    checkEmployee();
+                    checkEmployee(updateController.checkMail(update));
                     messageContent = "Тут мы тестируем параметры\n" + update.getMessage().getText();
                     buildMessage(messageContent, chatID);
                     break;
                 case "/feedback":
-                    checkEmployee();
+                    checkEmployee(updateController.checkMail(update));
                     messageContent = "Тут тоже мы тестируем параметры\n" + update.getMessage().getText();
                     buildMessage(messageContent, chatID);
                     break;
@@ -129,7 +129,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    public boolean checkEmployee() {
+    public boolean checkEmployee(boolean checkEmail) {
         if (1 != 1) {
             return false;
         }
