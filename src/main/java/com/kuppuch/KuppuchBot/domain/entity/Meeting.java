@@ -18,7 +18,7 @@ public class Meeting {
 
     @JoinColumn(name = "meeting_room_ig")
     @ManyToOne()
-    private MeetingRoom meetingId;
+    private MeetingRoom meetingRoom;
 
     private String title;
 
@@ -28,7 +28,8 @@ public class Meeting {
     @ManyToOne
     private UserMeeting userMeeting;
 
-    private LocalDateTime startDateTime;
 
-    private LocalDateTime endDateTime;
+    private String startDateTime;
+
+    private String stopDateTime;
 }

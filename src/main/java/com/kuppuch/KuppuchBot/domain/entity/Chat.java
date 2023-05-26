@@ -27,4 +27,10 @@ public class Chat {
     @JoinColumn(name="role_id")
     private Set<Role> role;
 
+    public Chat(String name, String link, String chatPlaceCode, Set<Role> role) {
+        this.name = name;
+        this.link = link;
+        this.chatPlaceCode = chatPlaceCode;
+        this.role = role;
+    }
 }

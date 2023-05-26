@@ -19,7 +19,7 @@ public class MeetingRoom {
     private String name;
 
 
-    @OneToMany(mappedBy = "meetingId")
+    @OneToMany(mappedBy = "meetingRoom")
     private Set<Meeting> meeting;
 
 }

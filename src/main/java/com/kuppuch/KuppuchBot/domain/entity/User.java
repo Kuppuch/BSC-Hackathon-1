@@ -68,4 +68,17 @@ public class User {
 
     public User() {
     }
+
+    public User(String firstName, String lastName, String telegrammId, boolean isActive, String postAddress) {
+        FirstName = firstName;
+        LastName = lastName;
+        this.telegrammId = telegrammId;
+        this.isActive = isActive;
+        this.postAddress = postAddress;
+    }
+
+    public User(String firstName, String lastName) {
+        FirstName = firstName;
+        LastName = lastName;
+    }
 }
