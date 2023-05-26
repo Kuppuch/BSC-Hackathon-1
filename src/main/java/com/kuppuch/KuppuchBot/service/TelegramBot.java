@@ -159,12 +159,13 @@ public class TelegramBot extends TelegramLongPollingBot {
                            user.setActive(true);
                            user.setTelegrammId(update.getMessage().getChatId().toString());
                            userRepository.save(user);
-                           User checkUser = userRepository.getById(user.getId());
-                           if (checkUser.isActive() && checkUser.getTelegrammId().length() > 0) {
-                               messageContent = "Добро пожаловать";
-                           } else {
-                               messageContent = "Доступ запрещён";
+                           if(userRepository.findById(user.getId()).get().isActive() &&
+                           userRepository.findById(user.getId()).get().getTelegrammId().length()>0){
+                               messageContent = "Добро пожаловать!";
+                           }else {
+                               messageContent = "Доступ заперщен!";
                            }
+
                        }
                     }
                     buildMessage(messageContent, chatID);
