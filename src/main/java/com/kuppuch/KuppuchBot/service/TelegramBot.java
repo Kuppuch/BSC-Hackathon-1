@@ -61,7 +61,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             switch (messageText) {
                 case "/start":
-                    if (!updateController.checkMail(update)) {
+                    if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
                         emailChecker.put(update.getMessage().getChatId(), true);
                     } else {
@@ -73,19 +73,19 @@ public class TelegramBot extends TelegramLongPollingBot {
                     buildMessage(messageContent, chatID);
                     break;
                 case "/importamt_people":
-                    if (!updateController.checkMail(update)) {
+                    if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
                     } else {
-                        updateController.checkMail(update);
+                        updateController.checkMail(update.getMessage().getChatId().toString());
                         messageContent = "Some text";
                     }
                     buildMessage(messageContent, chatID);
                     break;
                 case "/chats":
-                    if (!updateController.checkMail(update)) {
+                    if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
                     } else {
-                        updateController.checkMail(update);
+                        updateController.checkMail(update.getMessage().getChatId().toString());
                         messageContent = "В этих чатах вас ждут:\n" +
                                 "Чат ЦК " + "Аналитики" + "\n" +
                                 "Чат off-topic " + "Аналитики" + "\n";
@@ -93,10 +93,10 @@ public class TelegramBot extends TelegramLongPollingBot {
                     buildMessage(messageContent, chatID);
                     break;
                 case "/logins":
-                    if (!updateController.checkMail(update)) {
+                    if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
                     } else {
-                        updateController.checkMail(update);
+                        updateController.checkMail(update.getMessage().getChatId().toString());
                         messageContent = "Храните ваши логины в безопасности и не передавайте третим лицам\n" +
                                 "Пользователь - " + "Заглушка" + "\n" +
                                 "login - " + "Заглушка" + "\n" +
@@ -108,10 +108,10 @@ public class TelegramBot extends TelegramLongPollingBot {
                     buildMessage(messageContent, chatID);
                     break;
                 case "/notification":
-                    if (!updateController.checkMail(update)) {
+                    if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
                     } else {
-                        updateController.checkMail(update);
+                        updateController.checkMail(update.getMessage().getChatId().toString());
                         messageContent = "В ближайшую неделю вас ожидают следующие встречи:\n\n" +
                                 "<b>Понедельник</b>\n" +
                                 "15:00 - 16:00 1-1\n" +
@@ -122,29 +122,29 @@ public class TelegramBot extends TelegramLongPollingBot {
                     buildMessage(messageContent, chatID);
                     break;
                 case "/library_bsc":
-                    if (!updateController.checkMail(update)) {
+                    if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
                     } else {
-                        updateController.checkMail(update);
+                        updateController.checkMail(update.getMessage().getChatId().toString());
                         messageContent = "Предлгаю ознакомиться со следующей литературой\n" +
                                 "<a href='https://habr.com/ru/articles/692524/'>Как аналитику стать разработчиком</a>";
                     }
                     buildMessage(messageContent, chatID);
                     break;
                 case "/search":
-                    if (!updateController.checkMail(update)) {
+                    if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
                     } else {
-                        updateController.checkMail(update);
+                        updateController.checkMail(update.getMessage().getChatId().toString());
                         messageContent = "Тут мы тестируем параметры\n" + update.getMessage().getText();
                     }
                     buildMessage(messageContent, chatID);
                     break;
                 case "/feedback":
-                    if (!updateController.checkMail(update)) {
+                    if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
                     } else {
-                        updateController.checkMail(update);
+                        updateController.checkMail(update.getMessage().getChatId().toString());
                         messageContent = "Тут тоже мы тестируем параметры\n" + update.getMessage().getText();
                     }
                     buildMessage(messageContent, chatID);

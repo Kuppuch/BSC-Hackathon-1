@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserByPostAddress(String email);
+    Optional<User> findUserByTelegrammId(String tgID);
 }
