@@ -153,7 +153,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                     messageContent = "Извините, команда не распознана";
                     boolean ok = emailChecker.get(update.getMessage().getChatId());
                     if (ok) {
-                        Optional<User> userOptional =  userRepository.findUserByPostAddress(update.getMessage().getText());
+                        String email = update.getMessage().getText();
+                        Optional<User> userOptional =  userRepository.findUserByPostAddress(email);
                        if (userOptional.isPresent()) {
                            User user = userOptional.get();
                            user.setActive(true);
@@ -189,12 +190,5 @@ public class TelegramBot extends TelegramLongPollingBot {
                 log.error(e.getMessage());
             }
         }
-    }
-
-    public boolean checkEmployee(boolean checkEmail) {
-        if (1 != 1) {
-            return false;
-        }
-        return true;
     }
 }

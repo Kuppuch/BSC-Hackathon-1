@@ -5,6 +5,8 @@ import javax.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Set;
+
 @Entity
 @Data
 @EqualsAndHashCode
@@ -15,8 +17,8 @@ public class UserOnboard {
     @GeneratedValue
     private Long id;
 
-    @OneToOne(mappedBy = "userOnboard")
-    private User user;
+    @ManyToMany(mappedBy = "userOnboard")
+    private Set<User> user;
 
     @JoinColumn(name = "onboardPage")
     @OneToOne(cascade = CascadeType.ALL)

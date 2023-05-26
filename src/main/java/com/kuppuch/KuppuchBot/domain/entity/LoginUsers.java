@@ -12,10 +12,11 @@ import lombok.EqualsAndHashCode;
 public class LoginUsers {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String login;
+    private String name;
 
     @JoinColumn(name = "user_id")
     @ManyToOne()

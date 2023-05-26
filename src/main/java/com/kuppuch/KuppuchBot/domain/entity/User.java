@@ -52,9 +52,13 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<LoginUsers> loginUsers;
 
-    @JoinColumn(name = "user_onboard")
-    @OneToOne
-    private UserOnboard userOnboard;
+    @ManyToMany
+    @JoinTable(
+            name = "user_onboard_page",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "page_id")
+    )
+    private Set<UserOnboard> userOnboard;
 
 
     @Column(name = "telegramm_id")
