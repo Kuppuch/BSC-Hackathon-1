@@ -1,12 +1,8 @@
 package com.kuppuch.KuppuchBot.domain.entity;
 
-import java.time.LocalDate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.soap.Name;
 
-import com.kuppuch.KuppuchBot.domain.model.Office;
-import com.kuppuch.KuppuchBot.domain.model.UserType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
@@ -20,30 +16,49 @@ public class User {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(name = "name")
+    @Column(name = "first_name")
     @NotNull
     @Length(max = 256)
-    private String name;
-    @Column(name = "new_employee", nullable = false)
-    private Boolean newEmployee;
-    @Column(name = "user_type")
-    private UserType role;
-    @Column(name = "office")
-    private Office office;
-    private LocalDate hireDate;
-    private LocalDate birthDate;
+    private String FirstName;
+    @Column(name = "last_name")
+    @NotNull
+    @Length(max = 256)
+    private String LastName;
+
+    @JoinColumn(name = "user_roles", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private Roles role;
+
+    @JoinColumn(name = "office_code", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private Office office_code;
+
+    @JoinColumn(name = "user_mentoring",  referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private Mentoring userMentoring;
+
+    @JoinColumn(name="login_user", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private LoginUsers loginUsers;
+
+    @JoinColumn(name = "onboard_page", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private UserOnboard userOnboard;
+
+
+    @Column(name ="telegramm_id")
+    private String telegrammId;
+
+    @Column(name = "active", nullable = false)
+    private boolean isActive;
+
+    @Column(name = "post_address")
+    private String postAddress;
+
 
 
     public User() {
     }
 
-    public User(Long id, String name, Boolean newEmployee, UserType role, Office office, LocalDate hireDate, LocalDate birthDate) {
-        this.id = id;
-        this.name = name;
-        this.newEmployee = newEmployee;
-        this.role = role;
-        this.office = office;
-        this.hireDate = hireDate;
-        this.birthDate = birthDate;
-    }
+
 }
