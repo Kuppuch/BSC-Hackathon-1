@@ -1,5 +1,6 @@
 package com.kuppuch.KuppuchBot.domain.entity;
 
+import java.util.Set;
 import javax.persistence.*;
 
 import lombok.Data;
@@ -17,7 +18,8 @@ public class MeetingRoom {
 
     private String name;
 
-    @OneToOne(mappedBy = "id")
-    private Meeting meeting;
+
+    @OneToMany(mappedBy = "meetingId")
+    private Set<Meeting> meeting;
 
 }

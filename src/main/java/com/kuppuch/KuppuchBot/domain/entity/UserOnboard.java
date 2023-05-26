@@ -15,10 +15,10 @@ public class UserOnboard {
     @GeneratedValue
     private Long id;
 
-    @OneToOne(mappedBy = "id")
+    @OneToOne(mappedBy = "userOnboard")
     private User user;
 
-    @JoinColumn(name = "onboardPage", referencedColumnName = "id")
+    @JoinColumn(name = "onboardPage")
     @OneToOne(cascade = CascadeType.ALL)
     private Page onboardPage;
 

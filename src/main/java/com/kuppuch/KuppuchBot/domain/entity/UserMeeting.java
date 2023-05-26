@@ -1,5 +1,6 @@
 package com.kuppuch.KuppuchBot.domain.entity;
 
+import java.util.Set;
 import javax.persistence.*;
 
 import lombok.Data;
@@ -15,9 +16,9 @@ public class UserMeeting {
     @GeneratedValue
     private Long id;
 
-    @JoinColumn(name = "meetting_id", referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
-    private Meeting meetingId;
+
+    @OneToMany(mappedBy = "userMeeting" )
+    private Set<Meeting> meetingId;
 
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @OneToOne(cascade = CascadeType.ALL)

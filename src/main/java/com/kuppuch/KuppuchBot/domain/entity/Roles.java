@@ -1,5 +1,7 @@
 package com.kuppuch.KuppuchBot.domain.entity;
 
+import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 
 import lombok.Data;
@@ -15,16 +17,17 @@ public class Roles {
     @GeneratedValue
     private Long id;
 
-    @JoinColumn(name="role_chat", referencedColumnName = "id" )
-    @OneToOne(cascade =CascadeType.ALL)
-    private Chat roleChat;
 
-    @OneToOne(mappedBy = "role")
-    private User user;
+    @OneToMany(mappedBy = "role")
+    private List<Chat> roleChat;
 
-    @JoinColumn(name = "literature_role",referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
-    private Literature literature;
+    @ManyToMany(mappedBy = "role")
+    private Set<User> user;
+
+
+
+    @OneToMany(mappedBy = "role")
+    private List<Literature> literature;
 
     private Integer roleCode;
     private String roleName;

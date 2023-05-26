@@ -15,10 +15,13 @@ public class Mentoring {
     @GeneratedValue
     private Long id;
 
-    private Integer mentorId;
-    private Integer noobId;
 
-    @OneToOne(mappedBy = "userMentoring")
+    @JoinColumn(name="user_mentoring")
+    @ManyToOne()
     private User user;
+
+    @JoinColumn(name="user_mentyy")
+    @ManyToOne()
+    private User user_mentor;
 
 }

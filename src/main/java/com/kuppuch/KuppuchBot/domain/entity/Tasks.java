@@ -15,13 +15,13 @@ public class Tasks {
     @GeneratedValue
     private Long id;
 
-    @JoinColumn(name = "page_id", referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "page_id")
+    @ManyToOne()
     private Page pageId;
 
     private String text;
 
-    @JoinColumn(name = "status_code", referencedColumnName = "id")
+    @JoinColumn(name = "status_code")
     @OneToOne(cascade = CascadeType.ALL)
     private Statuses statusCode;
 

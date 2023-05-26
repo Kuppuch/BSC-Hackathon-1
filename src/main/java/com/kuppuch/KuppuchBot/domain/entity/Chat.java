@@ -21,7 +21,8 @@ public class Chat {
 
     private Integer chatPlaceCode;
 
-    @OneToOne(mappedBy = "roleChat")
-    private Roles roles;
+    @ManyToOne
+    @JoinColumn(name="chat_id")
+    private Roles role;
 
 }

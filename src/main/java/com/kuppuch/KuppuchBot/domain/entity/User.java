@@ -1,10 +1,10 @@
 package com.kuppuch.KuppuchBot.domain.entity;
 
-import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import com.kuppuch.KuppuchBot.domain.model.UserType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
@@ -28,24 +28,36 @@ public class User {
     @Length(max = 256)
     private String LastName;
 
-    @JoinColumn(name = "user_roles", referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
-    private Roles role;
 
-    @JoinColumn(name = "office_code", referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
-    private Office office_code;
-
-    @JoinColumn(name = "user_mentoring",  referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
-    private Mentoring userMentoring;
-
-    @JoinColumn(name="login_user", referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
-    private LoginUsers loginUsers;
+    @ManyToMany
+    @JoinTable(
+        name = "user_role",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Roles> role;
 
 
-    @Column(name ="telegramm_id")
+    @OneToMany(mappedBy = "user")
+    private Set<Office> office_code;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<Mentoring> userMentoring;
+
+    @OneToMany(mappedBy = "user_mentor")
+    private List<Mentoring> userMentings;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<LoginUsers> loginUsers;
+
+    @JoinColumn(name = "user_onboard")
+    @OneToOne
+    private UserOnboard userOnboard;
+
+
+    @Column(name = "telegramm_id")
     private String telegrammId;
 
     @Column(name = "active", nullable = false)
@@ -53,7 +65,6 @@ public class User {
 
     @Column(name = "post_address")
     private String postAddress;
-
 
 
     public User() {

@@ -17,10 +17,8 @@ public class LoginUsers {
 
     private String login;
 
-    @OneToOne(mappedBy = "id")
+    @JoinColumn(name = "user_id")
+    @ManyToOne()
     private User user;
 
-    @JoinColumn(name = "login_page", referencedColumnName = "id")
-    @OneToOne(mappedBy = "id")
-    private Page loginPage;
 }

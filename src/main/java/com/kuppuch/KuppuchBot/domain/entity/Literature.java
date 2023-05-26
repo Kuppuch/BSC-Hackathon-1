@@ -17,6 +17,7 @@ public class Literature {
 
     private String name;
 
-    @OneToOne(mappedBy = "id")
+    @ManyToOne
+    @JoinColumn(name = "role_id")
     private Roles role;
 }

@@ -16,15 +16,16 @@ public class Meeting {
     @GeneratedValue
     private Long id;
 
-    @JoinColumn(name = "meeting_time", referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
-    private MeetingRoom roomId;
+    @JoinColumn(name = "meeting_room_ig")
+    @ManyToOne()
+    private MeetingRoom meetingId;
 
     private String title;
 
     private String text;
 
-    @OneToOne(mappedBy = "id")
+    @JoinColumn(name = "meeting_id")
+    @ManyToOne
     private UserMeeting userMeeting;
 
     private LocalDateTime startDateTime;
