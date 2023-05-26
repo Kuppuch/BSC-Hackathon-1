@@ -5,6 +5,8 @@ import javax.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Set;
+
 @Entity
 @Data
 @EqualsAndHashCode
@@ -19,10 +21,10 @@ public class Chat {
 
     private String link;
 
-    private Integer chatPlaceCode;
+    private String chatPlaceCode;
 
-    @ManyToOne
-    @JoinColumn(name="chat_id")
-    private Roles role;
+    @ManyToMany
+    @JoinColumn(name="role_id")
+    private Set<Roles> role;
 
 }

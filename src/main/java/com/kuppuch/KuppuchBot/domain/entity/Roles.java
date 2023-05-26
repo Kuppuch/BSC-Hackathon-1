@@ -18,8 +18,8 @@ public class Roles {
     private Long id;
 
 
-    @OneToMany(mappedBy = "role")
-    private List<Chat> roleChat;
+    @ManyToMany(mappedBy = "role")
+    private Set<Chat> roleChat;
 
     @ManyToMany(mappedBy = "role")
     private Set<User> user;
