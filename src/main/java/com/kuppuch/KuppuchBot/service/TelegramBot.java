@@ -3,9 +3,7 @@ package com.kuppuch.KuppuchBot.service;
 import javax.annotation.PostConstruct;
 import javax.swing.text.html.Option;
 
-import com.kuppuch.KuppuchBot.domain.entity.Chat;
-import com.kuppuch.KuppuchBot.domain.entity.LoginUser;
-import com.kuppuch.KuppuchBot.domain.entity.User;
+import com.kuppuch.KuppuchBot.domain.entity.*;
 import com.kuppuch.KuppuchBot.repository.UserRepository;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +37,12 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Autowired
     LoginController loginController;
 
+    @Autowired
+    RoleController roleController;
+
+    @Autowired
+    NotificationController notificationController;
+
     private HashMap<Long, Boolean> emailChecker = new HashMap<>();
 
     public TelegramBot(UpdateController updateController) {
@@ -67,8 +71,9 @@ public class TelegramBot extends TelegramLongPollingBot {
             long chatID = update.getMessage().getChatId();
             String messageContent = "";
             String rejectAuth = "Необходимо авторизоваться\n Ожидается ввод Email";
+            String[] messageParams = messageContent.split(" ");
 
-            switch (messageText) {
+            switch (messageParams[0]) {
                 case "/start":
                     if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
@@ -84,6 +89,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case "/importamt_people":
                     if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
+                        emailChecker.put(update.getMessage().getChatId(), true);
                     } else {
                         updateController.checkMail(update.getMessage().getChatId().toString());
                         messageContent = "Some text";
@@ -96,8 +102,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                         emailChecker.put(update.getMessage().getChatId(), true);
                     } else {
                         List<Chat> chatList = userController.getUserChats(update.getMessage().getChatId());
+                        Role role = roleController.getRole(update.getMessage().getChatId());
                         messageContent = "В этих чатах вас ждут:\n" +
-                                "Чаты ЦК Аналитики:\n";
+                                "Чаты ЦК " + role.getRoleName() + ":\n";
                         for (Chat chat : chatList) {
                             messageContent += "<a href='" + chat.getLink() + "'>" + chat.getName()  + "</a>\n";
                         }
@@ -120,20 +127,27 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case "/notification":
                     if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
+                        emailChecker.put(update.getMessage().getChatId(), true);
                     } else {
-                        updateController.checkMail(update.getMessage().getChatId().toString());
-                        messageContent = "В ближайшую неделю вас ожидают следующие встречи:\n\n" +
-                                "<b>Понедельник</b>\n" +
-                                "15:00 - 16:00 1-1\n" +
-                                "\n" +
-                                "<b>Вторник</b>\n" +
-                                "15:00 - 16:00 1-2\n";
+                        List<Notification> notifications = notificationController.getNotification(update.getMessage().getChatId());
+                        if (notifications != null) {
+                            messageContent = "В ближайшую неделю вас ожидают следующие встречи:\n\n" +
+                                    "<b>Понедельник</b>\n" +
+                                    "15:00 - 16:00 1-1\n" +
+                                    "\n" +
+                                    "<b>Вторник</b>\n" +
+                                    "15:00 - 16:00 1-2\n";
+                        } else {
+                            messageContent = "Нет данных";
+                        }
+
                     }
                     buildMessage(messageContent, chatID);
                     break;
                 case "/library_bsc":
                     if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
+                        emailChecker.put(update.getMessage().getChatId(), true);
                     } else {
                         updateController.checkMail(update.getMessage().getChatId().toString());
                         messageContent = "Предлгаю ознакомиться со следующей литературой\n" +
@@ -144,7 +158,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case "/search":
                     if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
+                        emailChecker.put(update.getMessage().getChatId(), true);
                     } else {
+                        //TODO search -> messageParams[1].searchByName
+                        //TODO search -> messageParams[1].searchByLastName
+                        //TODO search -> messageParams[1].searchByRole
                         updateController.checkMail(update.getMessage().getChatId().toString());
                         messageContent = "Тут мы тестируем параметры\n" + update.getMessage().getText();
                     }
@@ -153,8 +171,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case "/feedback":
                     if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
+                        emailChecker.put(update.getMessage().getChatId(), true);
                     } else {
-                        updateController.checkMail(update.getMessage().getChatId().toString());
+                        //TODO save feedback -> messageParams[1].saveToFeedback
                         messageContent = "Тут тоже мы тестируем параметры\n" + update.getMessage().getText();
                     }
                     buildMessage(messageContent, chatID);
