@@ -1,4 +1,7 @@
 package com.kuppuch.KuppuchBot.domain.model;
 
-public enum Role {
+public enum CK {
+    QA,
+    DEV,
+    ANALYSIS
 }
