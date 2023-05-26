@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 import javax.swing.text.html.Option;
 
 import com.kuppuch.KuppuchBot.domain.entity.Chat;
+import com.kuppuch.KuppuchBot.domain.entity.LoginUser;
 import com.kuppuch.KuppuchBot.domain.entity.User;
 import com.kuppuch.KuppuchBot.repository.UserRepository;
 import lombok.extern.log4j.Log4j;
@@ -34,6 +35,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Autowired
     UserController userController;
+
+    @Autowired
+    LoginController loginController;
 
     private HashMap<Long, Boolean> emailChecker = new HashMap<>();
 
@@ -103,15 +107,13 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case "/logins":
                     if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
+                        emailChecker.put(update.getMessage().getChatId(), true);
                     } else {
-                        updateController.checkMail(update.getMessage().getChatId().toString());
-                        messageContent = "Храните ваши логины в безопасности и не передавайте третим лицам\n" +
-                                "Пользователь - " + "Заглушка" + "\n" +
-                                "login - " + "Заглушка" + "\n" +
-                                "Job Title - " + "Заглушка" + "\n" +
-                                "Manager - " + "Заглушка" + "\n" +
-                                "Локация - " + "Заглушка" + "\n" +
-                                "Email - " + "Заглушка" + "\n";
+                        List<LoginUser> loginUserList = loginController.getUserLogins(update.getMessage().getChatId());
+                        messageContent = "Храните ваши логины в безопасности и не передавайте третим лицам\n";
+                        for (LoginUser loginUser : loginUserList) {
+                            messageContent += loginUser.getName() + " - " + loginUser.getLogin() + "\n";
+                        }
                     }
                     buildMessage(messageContent, chatID);
                     break;
@@ -170,6 +172,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                            userRepository.save(user);
                            if(userRepository.findById(user.getId()).get().isActive() &&
                            userRepository.findById(user.getId()).get().getTelegrammId().length()>0){
+                               emailChecker.remove(update.getMessage().getChatId());
                                messageContent = "Добро пожаловать!";
                            } else {
                                messageContent = "Доступ заперщен!";
