@@ -1,5 +1,7 @@
 package com.kuppuch.KuppuchBot.domain.entity;
 
+import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -13,6 +15,7 @@ import org.hibernate.validator.constraints.Length;
 @Table(name = "users")
 public class User {
 
+
     @Id
     @GeneratedValue
     private Long id;
@@ -25,28 +28,36 @@ public class User {
     @Length(max = 256)
     private String LastName;
 
-    @JoinColumn(name = "user_roles", referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
-    private Roles role;
 
-    @JoinColumn(name = "office_code", referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
-    private Office office_code;
+    @ManyToMany
+    @JoinTable(
+        name = "user_role",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Roles> role;
 
-    @JoinColumn(name = "user_mentoring",  referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
-    private Mentoring userMentoring;
 
-    @JoinColumn(name="login_user", referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
-    private LoginUsers loginUsers;
+    @OneToMany(mappedBy = "user")
+    private Set<Office> office_code;
 
-    @JoinColumn(name = "onboard_page", referencedColumnName = "id")
-    @OneToOne(cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "user")
+    private List<Mentoring> userMentoring;
+
+    @OneToMany(mappedBy = "user_mentor")
+    private List<Mentoring> userMentings;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<LoginUsers> loginUsers;
+
+    @JoinColumn(name = "user_onboard")
+    @OneToOne
     private UserOnboard userOnboard;
 
 
-    @Column(name ="telegramm_id")
+    @Column(name = "telegramm_id")
     private String telegrammId;
 
     @Column(name = "active", nullable = false)
@@ -56,9 +67,6 @@ public class User {
     private String postAddress;
 
 
-
     public User() {
     }
-
-
 }

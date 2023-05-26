@@ -1,5 +1,6 @@
 package com.kuppuch.KuppuchBot.domain.entity;
 
+import java.util.Set;
 import javax.persistence.*;
 
 import lombok.Data;
@@ -21,17 +22,15 @@ public class Page {
 
     private String pageName;
 
-    @JoinColumn(name = "page_types", referencedColumnName = "id")
+    @JoinColumn(name = "page_types")
     @OneToOne(cascade = CascadeType.ALL)
     private PageTypes pageTypes;
 
-    @OneToOne(mappedBy = "id")
-    private Tasks tasks;
+    @OneToMany(mappedBy = "pageId")
+    private Set<Tasks> tasks;
 
-    @OneToOne(mappedBy = "id")
-    private LoginUsers loginUsers;
 
-    @OneToOne(mappedBy = "id")
+    @OneToOne(mappedBy = "onboardPage")
     private UserOnboard userOnboard;
 
 

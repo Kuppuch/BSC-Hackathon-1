@@ -1,5 +1,6 @@
 package com.kuppuch.KuppuchBot.domain.entity;
 
+import java.util.Set;
 import javax.persistence.*;
 
 import lombok.Data;
@@ -8,8 +9,8 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 @EqualsAndHashCode
-@Table(name ="chat")
-public class Chat {
+@Table(name="meeting_room")
+public class MeetingRoom {
 
     @Id
     @GeneratedValue
@@ -17,12 +18,8 @@ public class Chat {
 
     private String name;
 
-    private String link;
 
-    private Integer chatPlaceCode;
-
-    @ManyToOne
-    @JoinColumn(name="chat_id")
-    private Roles role;
+    @OneToMany(mappedBy = "meetingId")
+    private Set<Meeting> meeting;
 
 }

@@ -22,6 +22,6 @@ public class Statuses {
 
     private boolean isActive;
 
-    @OneToOne(mappedBy = "is")
+    @OneToOne(mappedBy = "statusCode")
     private Tasks task;
 }

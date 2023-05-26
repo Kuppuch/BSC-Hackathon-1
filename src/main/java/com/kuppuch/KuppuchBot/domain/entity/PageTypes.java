@@ -19,6 +19,6 @@ public class PageTypes {
 
     private String pageTypeName;
 
-    @OneToOne(mappedBy = "id")
+    @OneToOne(mappedBy = "pageTypes")
     private Page page;
 }

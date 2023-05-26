@@ -21,7 +21,8 @@ public class Office {
 
     private String officeName;
 
-    @OneToOne(mappedBy = "office_code")
+    @JoinColumn(name="user_id")
+    @ManyToOne
     private User user;
 
     public Office() {
