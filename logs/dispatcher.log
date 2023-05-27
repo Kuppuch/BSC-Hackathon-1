@@ -1,0 +1,2 @@
+2023-05-27 11:59:37 ERROR TelegramBot:251 - Error executing org.telegram.telegrambots.meta.api.methods.send.SendMessage query: [400] Bad Request: BUTTON_DATA_INVALID
+2023-05-27 12:00:18 ERROR TelegramBot:251 - Error executing org.telegram.telegrambots.meta.api.methods.send.SendMessage query: [400] Bad Request: BUTTON_DATA_INVALID

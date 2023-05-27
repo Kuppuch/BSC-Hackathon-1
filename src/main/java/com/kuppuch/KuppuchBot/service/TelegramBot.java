@@ -11,9 +11,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +49,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Autowired
     SearchController searchController;
+
+    @Autowired
+    LibraryController libraryController;
 
     private HashMap<Long, Boolean> emailChecker = new HashMap<>();
 
@@ -148,15 +155,27 @@ public class TelegramBot extends TelegramLongPollingBot {
                     buildMessage(messageContent, chatID);
                     break;
                 case "/library_bsc":
+                    InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
                     if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
                         messageContent = rejectAuth;
                         emailChecker.put(update.getMessage().getChatId(), true);
                     } else {
-                        updateController.checkMail(update.getMessage().getChatId().toString());
-                        messageContent = "Предлгаю ознакомиться со следующей литературой\n" +
-                                "<a href='https://habr.com/ru/articles/692524/'>Как аналитику стать разработчиком</a>";
+                        List<String> books = libraryController.getLibrary();
+                        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+                        List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                        keyboardMarkup.setKeyboard(rowsInline);
+
+                        messageContent = "Предлгаю ознакомиться со следующей литературой\n";
+                        for (int i = 0; i < books.size(); i++) {
+                            messageContent += i+1 + " - " + books.get(i) + "\n";
+                            var button = new InlineKeyboardButton();
+                            button.setText(String.valueOf(i+1));
+                            button.setCallbackData(String.valueOf(i+1));
+                            rowInline.add(button);
+                            rowsInline.add(rowInline);
+                        }
                     }
-                    buildMessage(messageContent, chatID);
+                    buildButtonMessage(keyboardMarkup, messageContent, chatID);
                     break;
                 case "/search":
                     if (!updateController.checkMail(update.getMessage().getChatId().toString())) {
@@ -206,6 +225,28 @@ public class TelegramBot extends TelegramLongPollingBot {
                     }
                     buildMessage(messageContent, chatID);
             }
+        } else if (update.hasCallbackQuery()) {
+            int messageID = update.getCallbackQuery().getMessage().getMessageId();
+            long chatID = update.getCallbackQuery().getMessage().getChatId();
+            String callbackData = update.getCallbackQuery().getData();
+            EditMessageText editMessage = new EditMessageText();
+
+            switch (callbackData) {
+                case "0":
+                case "1":
+                case "2":
+                    editMessage.setChatId(String.valueOf(chatID));
+                    editMessage.setText("Тут должна присылаться выбранная книга, но мы не успели");
+                    editMessage.setMessageId(messageID);
+                    try {
+                        execute(editMessage);
+                    } catch (TelegramApiException e) {
+
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -213,6 +254,15 @@ public class TelegramBot extends TelegramLongPollingBot {
         SendMessage message = new SendMessage();
         message.setParseMode("html");
         message.setText(messageContent);
+        message.setChatId(String.valueOf(chatID));
+        sendAnswerMessage(message);
+    }
+
+    public void buildButtonMessage(InlineKeyboardMarkup keyboardMarkup, String messageContent, long chatID) {
+        SendMessage message = new SendMessage();
+        message.setParseMode("html");
+        message.setText(messageContent);
+        message.setReplyMarkup(keyboardMarkup);
         message.setChatId(String.valueOf(chatID));
         sendAnswerMessage(message);
     }
