@@ -43,6 +43,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Autowired
     NotificationController notificationController;
 
+    @Autowired
+    SearchController searchController;
+
     private HashMap<Long, Boolean> emailChecker = new HashMap<>();
 
     public TelegramBot(UpdateController updateController) {
@@ -71,7 +74,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             long chatID = update.getMessage().getChatId();
             String messageContent = "";
             String rejectAuth = "Необходимо авторизоваться\n Ожидается ввод Email";
-            String[] messageParams = messageContent.split(" ");
+            String[] messageParams = update.getMessage().getText().split(" ");
 
             switch (messageParams[0]) {
                 case "/start":
@@ -129,17 +132,17 @@ public class TelegramBot extends TelegramLongPollingBot {
                         messageContent = rejectAuth;
                         emailChecker.put(update.getMessage().getChatId(), true);
                     } else {
-                        List<Notification> notifications = notificationController.getNotification(update.getMessage().getChatId());
-                        if (notifications != null) {
-                            messageContent = "В ближайшую неделю вас ожидают следующие встречи:\n\n" +
-                                    "<b>Понедельник</b>\n" +
-                                    "15:00 - 16:00 1-1\n" +
-                                    "\n" +
-                                    "<b>Вторник</b>\n" +
-                                    "15:00 - 16:00 1-2\n";
-                        } else {
+//                        List<Notification> notifications = notificationController.getNotification(update.getMessage().getChatId());
+//                        if (notifications != null) {
+//                            messageContent = "В ближайшую неделю вас ожидают следующие встречи:\n\n" +
+//                                    "<b>Понедельник</b>\n" +
+//                                    "15:00 - 16:00 1-1\n" +
+//                                    "\n" +
+//                                    "<b>Вторник</b>\n" +
+//                                    "15:00 - 16:00 1-2\n";
+//                        } else {
                             messageContent = "Нет данных";
-                        }
+//                        }
 
                     }
                     buildMessage(messageContent, chatID);
@@ -160,11 +163,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                         messageContent = rejectAuth;
                         emailChecker.put(update.getMessage().getChatId(), true);
                     } else {
-                        //TODO search -> messageParams[1].searchByName
-                        //TODO search -> messageParams[1].searchByLastName
-                        //TODO search -> messageParams[1].searchByRole
-                        updateController.checkMail(update.getMessage().getChatId().toString());
-                        messageContent = "Тут мы тестируем параметры\n" + update.getMessage().getText();
+                        if (messageParams.length > 1) {
+                            messageContent = searchController.searchUser(messageParams[1]);
+                        } else {
+                            messageContent = "Введите запрос с параметрами в виде /search [имя](или)[фамилия]";
+                        }
                     }
                     buildMessage(messageContent, chatID);
                     break;

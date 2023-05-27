@@ -21,11 +21,11 @@ public class User {
     @Column(name = "first_name")
     @NotNull
     @Length(max = 256)
-    private String FirstName;
+    private String firstName;
     @Column(name = "last_name")
     @NotNull
     @Length(max = 256)
-    private String LastName;
+    private String lastName;
 
 
     @JoinColumn(name="role_id")
